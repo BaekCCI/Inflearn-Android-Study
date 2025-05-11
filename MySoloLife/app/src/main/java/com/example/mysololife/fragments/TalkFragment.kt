@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.mysololife.R
+import com.example.mysololife.board.BoardInsideActivity
 import com.example.mysololife.board.BoardListLVAdapter
 import com.example.mysololife.board.BoardModel
 import com.example.mysololife.board.BoardWriteActivity
@@ -25,7 +26,7 @@ class TalkFragment : Fragment() {
     private lateinit var binding: FragmentTalkBinding
     private val TAG = TalkFragment::class.java.simpleName
     private val boardDataList = mutableListOf<BoardModel>()
-
+    private val boardKeyList = mutableListOf<String>()
     private lateinit var boardLVAdapter: BoardListLVAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,22 @@ class TalkFragment : Fragment() {
 
         binding.boardListView.adapter = boardLVAdapter
 
+        binding.boardListView.setOnItemClickListener { parent, view, position, id ->
+
+            //첫번째 방법 : ListView에 있는 데이터를 액티비티로 넘기기
+//            val intent = Intent(context, BoardInsideActivity::class.java)
+//            intent.putExtra("title", boardDataList[position].title)
+//            intent.putExtra("content", boardDataList[position].content)
+//            intent.putExtra("time", boardDataList[position].time)
+//            startActivity(intent)
+
+            //두번째 방법: Firebase에 있는 데이터 id기반으로 데이터 다시 받아오기'
+            val intent = Intent(context, BoardInsideActivity::class.java)
+            intent.putExtra("key", boardKeyList[position])
+            startActivity(intent)
+        }
+
+        //탭
         binding.writeBtn.setOnClickListener {
             val intent = Intent(context, BoardWriteActivity::class.java)
             startActivity(intent)
@@ -75,7 +92,10 @@ class TalkFragment : Fragment() {
 
                     val item = dataModel.getValue(BoardModel::class.java)
                     boardDataList.add(item!!)
+                    boardKeyList.add(dataModel.key.toString())
                 }
+                boardDataList.reverse()
+                boardKeyList.reverse()
                 boardLVAdapter.notifyDataSetChanged()
             }
 
