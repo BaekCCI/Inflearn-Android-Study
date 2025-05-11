@@ -2,17 +2,22 @@ package com.example.mysololife.board
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.mysololife.R
 import com.example.mysololife.databinding.ActivityBoardInsideBinding
 import com.example.mysololife.utils.FBRef
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class BoardInsideActivity : AppCompatActivity() {
 
@@ -35,6 +40,22 @@ class BoardInsideActivity : AppCompatActivity() {
         //두번째 방법
         val key = intent.getStringExtra("key").toString()
         getBoardData(key)
+        getImageData(key)
+
+    }
+
+    private fun getImageData(key: String) {
+        val storageReference = Firebase.storage.reference.child(key + ".png")
+
+        val imageView = binding.getImageArea
+
+        storageReference.downloadUrl.addOnCompleteListener(OnCompleteListener { task->
+            if(task.isSuccessful){
+                Glide.with(this).load(task.result).into(imageView)
+            }else{
+
+            }
+        })
     }
 
     private fun getBoardData(key: String) {
@@ -44,6 +65,7 @@ class BoardInsideActivity : AppCompatActivity() {
                 binding.titleArea.text = dataModel!!.title
                 binding.contentArea.text = dataModel.content
                 binding.timeArea.text = dataModel.time
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
