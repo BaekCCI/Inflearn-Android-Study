@@ -7,14 +7,8 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.mysololife.R
@@ -35,7 +29,7 @@ class BoardEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBoardEditBinding
     private lateinit var key: String
     private var curImg: Drawable? = null
-    private lateinit var uid: String
+    private lateinit var writeUid: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +47,7 @@ class BoardEditActivity : AppCompatActivity() {
             val content = binding.contentArea.text.toString()
             val time = FBAuth.getTime()
 
-            FBRef.boardRef.child(key).setValue(BoardModel(title, content, uid, time))
+            FBRef.boardRef.child(key).setValue(BoardModel(title, content, writeUid, time))
 
             Toast.makeText(this, "게시글 수정 완료", Toast.LENGTH_LONG).show()
 
@@ -114,7 +108,7 @@ class BoardEditActivity : AppCompatActivity() {
                 if (dataModel != null) {
                     binding.titleArea.setText(dataModel.title)
                     binding.contentArea.setText(dataModel.content)
-                    uid = dataModel.uid
+                    writeUid = dataModel.uid
                 } else {
                     finish()
                 }

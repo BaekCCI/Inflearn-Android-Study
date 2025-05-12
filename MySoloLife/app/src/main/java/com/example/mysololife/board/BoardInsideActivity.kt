@@ -12,10 +12,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.mysololife.R
 import com.example.mysololife.databinding.ActivityBoardInsideBinding
+import com.example.mysololife.utils.FBAuth
 import com.example.mysololife.utils.FBRef
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
@@ -85,6 +87,11 @@ class BoardInsideActivity : AppCompatActivity() {
                     binding.titleArea.text = dataModel.title
                     binding.contentArea.text = dataModel.content
                     binding.timeArea.text = dataModel.time
+
+                    val myUid = FBAuth.getUid()
+                    if (myUid == dataModel.uid) {
+                        binding.boardSettingIcon.isVisible = true
+                    }
                 } else {
                     finish()
                 }
