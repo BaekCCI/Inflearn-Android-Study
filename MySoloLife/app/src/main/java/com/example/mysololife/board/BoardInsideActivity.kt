@@ -1,9 +1,11 @@
 package com.example.mysololife.board
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,6 +18,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.mysololife.R
+import com.example.mysololife.comment.CommentLVAdapter
+import com.example.mysololife.comment.CommentModel
 import com.example.mysololife.databinding.ActivityBoardInsideBinding
 import com.example.mysololife.utils.FBAuth
 import com.example.mysololife.utils.FBRef
@@ -33,6 +37,10 @@ class BoardInsideActivity : AppCompatActivity() {
 
     private lateinit var key: String
 
+    private lateinit var commentLVAdapter: CommentLVAdapter
+
+    private val commentDataList = mutableListOf<CommentModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,6 +54,53 @@ class BoardInsideActivity : AppCompatActivity() {
         key = intent.getStringExtra("key").toString()
         getBoardData(key)
         getImageData(key)
+
+        binding.commentBtn.setOnClickListener {
+            insertComment()
+
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.commentArea.windowToken, 0)
+
+            // 포커스 해제
+            binding.commentArea.clearFocus()
+        }
+        commentLVAdapter = CommentLVAdapter(commentDataList)
+        binding.commentLV.adapter = commentLVAdapter
+
+        getCommentData()
+    }
+
+    fun getCommentData() {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                commentDataList.clear()
+
+                for (dataModel in dataSnapshot.children) {
+
+                    val item = dataModel.getValue(CommentModel::class.java)
+                    commentDataList.add(item!!)
+                }
+                commentLVAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FBRef.commentRef.child(key).addValueEventListener(postListener)
+    }
+
+    fun insertComment() {
+        val comment = binding.commentArea.text.toString()
+        if (comment == "") {
+            Toast.makeText(this, "댓글을 입력해주세요", Toast.LENGTH_LONG).show()
+            return
+        }
+        FBRef.commentRef.child(key).push().setValue(CommentModel(comment, FBAuth.getTime()))
+
+        Toast.makeText(this, "댓글이 입력되었습니다.", Toast.LENGTH_LONG).show()
+        binding.commentArea.setText("")
     }
 
     private fun showDialog() {
@@ -74,7 +129,7 @@ class BoardInsideActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 Glide.with(this).load(task.result).into(imageView)
             } else {
-
+                binding.getImageArea.isVisible = false
             }
         })
     }

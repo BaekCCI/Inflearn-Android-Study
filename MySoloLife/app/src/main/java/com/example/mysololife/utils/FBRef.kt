@@ -10,6 +10,7 @@ class FBRef {
         val category2 = database.getReference("category2")
         val bookmarkRef = database.getReference("bookmark_list")
         val boardRef = database.getReference("board")
+        val commentRef = database.getReference("comment")
     }
 
 }
