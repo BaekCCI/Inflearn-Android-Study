@@ -72,7 +72,7 @@ class BookmarkFragment : Fragment() {
             it.findNavController().navigate(R.id.action_bookmarkFragment_to_homeFragment)
         }
         binding.storeTap.setOnClickListener {
-            it.findNavController().navigate(R.id.action_storeFragment_to_bookmarkFragment)
+            it.findNavController().navigate(R.id.action_bookmarkFragment_to_storeFragment)
         }
         return binding.root
     }

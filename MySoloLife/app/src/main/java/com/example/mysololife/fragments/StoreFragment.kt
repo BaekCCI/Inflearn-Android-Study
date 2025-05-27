@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.mysololife.R
@@ -34,6 +35,9 @@ class StoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_store, container, false)
+
+        val webView : WebView = binding.storeWebView
+        webView.loadUrl("https://www.inflearn.com/")
 
         binding.tipTap.setOnClickListener {
             it.findNavController().navigate(R.id.action_storeFragment_to_tipFragment)
