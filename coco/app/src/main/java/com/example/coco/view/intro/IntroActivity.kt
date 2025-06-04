@@ -1,4 +1,4 @@
-package com.example.coco.view
+package com.example.coco.view.intro
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

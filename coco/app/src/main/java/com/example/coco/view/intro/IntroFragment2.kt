@@ -1,21 +1,23 @@
-package com.example.coco.view
+package com.example.coco.view.intro
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.coco.R
-import com.example.coco.databinding.FragmentIntro1Binding
-import androidx.navigation.findNavController
+import com.example.coco.databinding.FragmentIntro2Binding
+import com.example.coco.view.SelectActivity
 
-class IntroFragment1 : Fragment() {
+class IntroFragment2 : Fragment() {
 
-    private var _binding: FragmentIntro1Binding? = null
+    private var _binding: FragmentIntro2Binding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -23,7 +25,7 @@ class IntroFragment1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentIntro1Binding.inflate(inflater,container,false)
+        _binding = FragmentIntro2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,7 +33,8 @@ class IntroFragment1 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.nextBtn.setOnClickListener {
-            view.findNavController().navigate(R.id.action_introFragment1_to_introFragment2)
+            val intent = Intent(requireContext(), SelectActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -39,5 +42,4 @@ class IntroFragment1 : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
