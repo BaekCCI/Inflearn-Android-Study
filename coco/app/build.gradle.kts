@@ -78,4 +78,8 @@ dependencies {
     //dataStore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
 
+    //lottie - animation
+    val lottieVersion = "6.6.6"
+    implementation("com.airbnb.android:lottie:$lottieVersion")
+
 }

@@ -7,12 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".view.intro.IntroActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/coin" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
         android:visibility="invisible"
+        app:defaultNavHost="true"
         app:navGraph="@navigation/main_nav" />
 </androidx.constraintlayout.widget.ConstraintLayout>

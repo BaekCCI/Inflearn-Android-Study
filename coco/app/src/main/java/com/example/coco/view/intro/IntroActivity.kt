@@ -8,10 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
 import com.example.coco.MainActivity
-import com.example.coco.R
 import com.example.coco.databinding.ActivityIntroBinding
 
-//Splash 화면
 class IntroActivity : AppCompatActivity() {
     private val viewModel: IntroViewModel by viewModels()
     private lateinit var binding : ActivityIntroBinding
@@ -32,6 +30,7 @@ class IntroActivity : AppCompatActivity() {
                 startActivity(intent)
             } else {
                 binding.fragmentContainerView.visibility = View.VISIBLE
+                binding.animationView.visibility = View.INVISIBLE
             }
         })
 
