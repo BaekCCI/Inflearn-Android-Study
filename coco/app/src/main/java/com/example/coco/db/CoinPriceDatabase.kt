@@ -21,7 +21,7 @@ abstract class CoinPriceDatabase : RoomDatabase() {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CoinPriceDatabase::class.java
+                    CoinPriceDatabase::class.java,
                     "coin_database"
                 )
                     .fallbackToDestructiveMigration()
