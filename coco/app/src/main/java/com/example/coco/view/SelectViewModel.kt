@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.coco.dataStore.MyDataStore
 import com.example.coco.model.CurrentPrice
 import com.example.coco.model.CurrentPriceResult
 import com.example.coco.repository.NetworkRepository
@@ -20,6 +21,10 @@ class SelectViewModel : ViewModel() {
     fun getCurrentCoinList() = viewModelScope.launch {
         val result = networkRepository.getCurrentCoinList()
         _currentPriceResult.value = result
+    }
+
+    fun setUpFirstFlag() = viewModelScope.launch {
+        MyDataStore().setUpFirstData()
     }
 
 }

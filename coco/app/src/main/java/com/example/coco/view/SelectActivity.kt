@@ -1,5 +1,6 @@
 package com.example.coco.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coco.MainActivity
 import com.example.coco.R
 import com.example.coco.databinding.ActivitySelectBinding
 import com.example.coco.view.adapter.SelectRVAdapter
@@ -17,7 +19,7 @@ import timber.log.Timber
 class SelectActivity : AppCompatActivity() {
     private val viewModel: SelectViewModel by viewModels()
 
-    private lateinit var binding : ActivitySelectBinding
+    private lateinit var binding: ActivitySelectBinding
 
     private lateinit var selectRVAdapter: SelectRVAdapter
 
@@ -36,6 +38,13 @@ class SelectActivity : AppCompatActivity() {
             binding.coinListRV.layoutManager = LinearLayoutManager(this)
             Timber.tag("SelectActivity").d(it.toString())
         })
+
+        viewModel.setUpFirstFlag()
+
+        binding.laterTextArea.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
