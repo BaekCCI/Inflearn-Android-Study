@@ -8,7 +8,6 @@ import timber.log.Timber
 
 class NetworkRepository {
 
-
     suspend fun getCurrentCoinList(): List<CurrentPriceResult> {
         val result = RetrofitInstance.api.getCurrentCoinList()
 
@@ -29,4 +28,7 @@ class NetworkRepository {
         }
         return currentPriceList
     }
+
+    suspend fun getInterestCoinPriceData(coin: String) =
+        RetrofitInstance.api.getRecentCoinPrice(coin)
 }

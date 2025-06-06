@@ -69,6 +69,7 @@ class CoinListFragment : Fragment() {
         selectRVAdapter.itemClick = object : CoinListRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 viewModel.updateInterestCoinData(selectedList[position])
+
             }
         }
 
