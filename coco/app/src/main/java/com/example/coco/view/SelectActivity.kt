@@ -39,12 +39,19 @@ class SelectActivity : AppCompatActivity() {
             Timber.tag("SelectActivity").d(it.toString())
         })
 
-        viewModel.setUpFirstFlag()
 
         binding.laterTextArea.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+
+            viewModel.setUpFirstFlag()
+            viewModel.saveSelectedCoinList(selectRVAdapter.selectedCoinList)
         }
+
+        viewModel.saved.observe(this, Observer {
+            if (it.equals("done")) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
     }
 }
