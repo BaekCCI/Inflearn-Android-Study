@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
-import com.example.coco.MainActivity
+import com.example.coco.view.main.MainActivity
 import com.example.coco.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {

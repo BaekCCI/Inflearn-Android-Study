@@ -2,16 +2,11 @@ package com.example.coco.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.coco.MainActivity
-import com.example.coco.R
+import com.example.coco.view.main.MainActivity
 import com.example.coco.databinding.ActivitySelectBinding
 import com.example.coco.view.adapter.SelectRVAdapter
 import timber.log.Timber
