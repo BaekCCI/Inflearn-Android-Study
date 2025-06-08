@@ -16,6 +16,7 @@ import com.example.coco.repository.NetworkRepository
 import com.example.coco.view.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Random
@@ -26,6 +27,8 @@ class PriceForegroundService : Service() {
 
     private val NOTIFICATION_ID = 10000
 
+    lateinit var job: Job
+
     override fun onCreate() {
         super.onCreate()
     }
@@ -35,8 +38,8 @@ class PriceForegroundService : Service() {
         when (intent?.action) {
             "START" -> {
 
-                CoroutineScope(Dispatchers.Default).launch {
-                    while(true){
+                job = CoroutineScope(Dispatchers.Default).launch {
+                    while (true) {
                         startForeground(NOTIFICATION_ID, makeNotification())
                         delay(3000)
                     }
@@ -44,6 +47,13 @@ class PriceForegroundService : Service() {
             }
 
             "STOP" -> {
+
+                if (::job.isInitialized && job.isActive) {
+                    job.cancel()
+                }
+
+                stopForeground(STOP_FOREGROUND_REMOVE)
+                stopSelf()
             }
         }
 
