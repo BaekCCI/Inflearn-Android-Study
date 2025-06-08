@@ -11,9 +11,18 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.coco.R
+import com.example.coco.model.CurrentPriceResult
+import com.example.coco.repository.NetworkRepository
 import com.example.coco.view.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.Random
 
 class PriceForegroundService : Service() {
+
+    private val networkRepository = NetworkRepository()
 
     private val NOTIFICATION_ID = 10000
 
@@ -25,7 +34,13 @@ class PriceForegroundService : Service() {
 
         when (intent?.action) {
             "START" -> {
-                startForeground(NOTIFICATION_ID,makeNotification())
+
+                CoroutineScope(Dispatchers.Default).launch {
+                    while(true){
+                        startForeground(NOTIFICATION_ID, makeNotification())
+                        delay(3000)
+                    }
+                }
             }
 
             "STOP" -> {
@@ -39,7 +54,14 @@ class PriceForegroundService : Service() {
         return null
     }
 
-    fun makeNotification(): Notification {
+    suspend fun makeNotification(): Notification {
+
+        val result = getAllCoinList()
+
+        val randomNum = Random().nextInt(result.size)
+
+        val title = result[randomNum].coinName
+        val content = result[randomNum].coinInfo.fluctate_24H
 
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -51,8 +73,8 @@ class PriceForegroundService : Service() {
 
         val builder = NotificationCompat.Builder(this, "CHANNEL_ID")
             .setSmallIcon(R.drawable.ic_baseline_access_alarms_24)
-            .setContentTitle("title")
-            .setContentText("content")
+            .setContentTitle("코인 이름 : $title")
+            .setContentText("변동 가격 : $content")
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -70,5 +92,11 @@ class PriceForegroundService : Service() {
 
         }
         return builder.build()
+    }
+
+    suspend fun getAllCoinList(): ArrayList<CurrentPriceResult> {
+        val result = networkRepository.getCurrentCoinList()
+
+        return ArrayList(result)
     }
 }
